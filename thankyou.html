@@ -1,0 +1,79 @@
+<!-- Save as thankyou.html -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Thank You - AutoLux</title>
+<style>
+  :root{ --bg:#071022; --accent:#00c2a8; --muted:#9aa6b2; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; }
+  *{box-sizing:border-box}
+  body{ margin:0; min-height:100vh; background:linear-gradient(180deg,#071022,#081428); color:#e6eef3; display:flex; align-items:center; justify-content:center; padding:28px; }
+  .card{ background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:36px; border-radius:16px; text-align:center; width:100%; max-width:760px; border:1px solid rgba(255,255,255,0.03);}
+  h1{ margin:0; font-size:28px;}
+  p{ color:var(--muted); margin-top:10px;}
+  .btn{ margin-top:20px; background:linear-gradient(90deg,var(--accent),#3dd7ff); border:none;padding:12px 18px;border-radius:12px;color:#042; font-weight:800; cursor:pointer;}
+  .summary{ margin-top:20px; text-align:left; border-radius:12px; padding:14px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.03); }
+  .small{ color:var(--muted); font-size:13px }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div style="font-size:50px">🎉</div>
+    <h1>Thank you for your purchase! Happyy Day!!</h1>
+    <p>Your order has been placed successfully.</p>
+
+    <div id="orderInfo" class="summary">
+      Loading order summary…
+    </div>
+
+    <div style="display:flex; gap:10px; justify-content:center; margin-top:18px;">
+      <button class="btn" onclick="backHome()">Back to Home</button>
+      <button class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)" onclick="downloadReceipt()">Download Receipt</button>
+    </div>
+
+    <div style="margin-top:12px" class="small">We emailed a confirmation (demo). For support, contact: 1800-123-456</div>
+  </div>
+
+<script>
+  const lastOrderRaw = localStorage.getItem('lastOrder');
+  const orderInfo = document.getElementById('orderInfo');
+
+  if(lastOrderRaw){
+    try{
+      const order = JSON.parse(lastOrderRaw);
+      orderInfo.innerHTML = `
+        <div style="font-weight:700">Order ID: ${order.id}</div>
+        <div style="margin-top:8px"><strong>Car:</strong> ${order.product.name}</div>
+        <div style="margin-top:6px"><strong>Price:</strong> ${order.product.price}</div>
+        <div style="margin-top:6px"><strong>Buyer:</strong> ${order.customer ? (order.customer.fullname || '-') : '-'}</div>
+        <div style="margin-top:6px; color:var(--muted)"><small>Payment: ${order.payment ? ('Card •••• ' + (order.payment.last4 || '****')) : '—'}</small></div>
+      `;
+    }catch(e){
+      orderInfo.textContent = 'Could not read order details.';
+    }
+  } else {
+    orderInfo.innerHTML = 'No recent order found. If you completed payment, please contact support.';
+  }
+
+  function backHome(){
+    // Optionally clear storage of selected product & customer but keep lastOrder
+    localStorage.removeItem('selectedProduct');
+    localStorage.removeItem('customerInfo');
+    window.location.href = 'index.html';
+  }
+
+  function downloadReceipt(){
+    const last = localStorage.getItem('lastOrder');
+    if(!last){ alert('No order to download.'); return; }
+    const order = JSON.parse(last);
+    const text = `Order Receipt\n\nOrder ID: ${order.id}\nCar: ${order.product.name}\nPrice: ${order.product.price}\nBuyer: ${order.customer ? order.customer.fullname : '-'}\nEmail: ${order.customer ? order.customer.email : '-'}\n\nThank you for choosing AutoLux!`;
+    const blob = new Blob([text], {type:'text/plain'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `${order.id}_receipt.txt`;
+    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  }
+</script>
+</body>
+</html>
