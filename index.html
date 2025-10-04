@@ -1,0 +1,208 @@
+<!-- Save as index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AutoLux - Cars For Every Journey</title>
+<style>
+  :root{
+    --bg:#0f1724;
+    --card:#0b1220;
+    --accent:#00c2a8;
+    --muted:#9aa6b2;
+    --glass: rgba(255,255,255,0.04);
+    --radius:12px;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:linear-gradient(180deg,#071022 0%, #0f1724 100%);
+    color:#e6eef3;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.45;
+  }
+  header{
+    padding:28px 6%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+  }
+  .brand{
+    display:flex;
+    gap:14px;
+    align-items:center;
+  }
+  .logo{
+    width:56px;height:56px;border-radius:12px;
+    background:linear-gradient(135deg,#00c2a8,#3dd7ff);
+    display:flex;align-items:center;justify-content:center;font-weight:700;color:#04202a;
+    box-shadow:0 6px 18px rgba(6,22,30,0.5);
+    font-size:18px;
+  }
+  nav a{ color:var(--muted); text-decoration:none; margin-left:18px;}
+  .hero{
+    padding:48px 6% 36px;
+    display:grid;
+    grid-template-columns:1fr 420px;
+    gap:32px;
+    align-items:center;
+  }
+  .hero-card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    padding:28px;
+    border-radius:16px;
+    box-shadow: 0 10px 30px rgba(2,8,16,0.6);
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .hero h1{ margin:0; font-size:36px; letter-spacing:-0.6px}
+  .tag{color:var(--muted); margin-top:8px}
+  .cta{ margin-top:20px; display:flex; gap:12px; align-items:center}
+  .btn{
+    background:linear-gradient(90deg,var(--accent),#3dd7ff);
+    border:none;padding:12px 18px;border-radius:12px;color:#022; font-weight:700; cursor:pointer;
+    box-shadow: 0 8px 22px rgba(0,194,168,0.12);
+  }
+  .secondary{
+    background:transparent;border:1px solid rgba(255,255,255,0.06); padding:10px 14px;border-radius:10px;color:var(--muted);
+  }
+  .banner{
+    border-radius:14px;
+    height:100%;
+    background-image: url("https://via.placeholder.com/900x500?text=Drive+Your+Dream");
+    background-size:cover;
+    background-position:center;
+    box-shadow: inset 0 0 0 1000px rgba(2,8,16,0.35);
+  }
+  main{ padding:28px 6% 80px; }
+  .products-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-top:22px;
+  }
+  .card{
+    background:var(--card);
+    border-radius:14px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,0.03);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .card:hover{ transform:translateY(-8px); box-shadow: 0 18px 40px rgba(2,8,16,0.6);}
+  .card img{ width:100%; height:150px; object-fit:cover; display:block;}
+  .card-body{ padding:14px; }
+  .title{ font-weight:700; font-size:16px; margin-bottom:6px;}
+  .desc{ color:var(--muted); font-size:13px; margin-bottom:10px; min-height:36px;}
+  .price-row{ display:flex; align-items:center; justify-content:space-between; gap:12px;}
+  .price{ font-weight:800; color:#bff7e8;}
+  .book-btn{ background:transparent; color:var(--accent); border:1px solid rgba(0,194,168,0.16); padding:8px 10px; border-radius:10px; cursor:pointer; font-weight:700;}
+  footer{ padding:28px 6%; color:var(--muted); text-align:center; border-top:1px solid rgba(255,255,255,0.02); margin-top:40px;}
+  @media (max-width:900px){
+    .hero{ grid-template-columns:1fr; }
+    .banner{ height:220px; border-radius:12px;}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo">AL</div>
+    <div>
+      <div style="font-weight:700;font-size:18px">AutoLux</div>
+      <div style="color:var(--muted);font-size:13px">Drive the future — today</div>
+    </div>
+  </div>
+  <nav>
+    <a href="#">Cars</a>
+    <a href="#">Offers</a>
+    <a href="#">Support</a>
+    <a href="form.html" style="margin-left:20px" class="secondary">Cart</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-card">
+    <h1>Summer Collection — Ride In Style</h1>
+    <p class="tag">Curated cars for every journey — city, adventure, luxury. Easy online booking. Flexible test drives.</p>
+    <div class="cta">
+      <button class="btn" onclick="document.querySelector('#models').scrollIntoView({behavior:'smooth'})">Browse Cars</button>
+      <a href="form.html" class="secondary">View Cart / Book</a>
+    </div>
+
+    <div style="margin-top:18px; color:var(--muted); font-size:13px">
+      <strong>Why AutoLux?</strong>
+      <ul style="margin:10px 0 0 18px; padding:0; color:var(--muted)">
+        <li>Transparent pricing & secure booking</li>
+        <li>Flexible cancellation</li>
+        <li>Verified vehicles & partner dealerships</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="banner" aria-hidden="true"></div>
+</section>
+
+<main>
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;">
+    <h2 style="margin:0">Featured Models</h2>
+    <div style="color:var(--muted)">6 handpicked cars • Free test drive booking</div>
+  </div>
+
+  <div id="models" class="products-grid">
+    <!-- Cards generated by JS -->
+  </div>
+</main>
+
+<footer>
+  © <span id="year"></span> AutoLux — Secure bookings • 24/7 support • Easy returns
+</footer>
+
+<script>
+  const products = [
+    {id:'al01', name:'Aurora GT', desc:'Sporty hatch with 6-speed turbo and premium infotainment.', price:'₹18,99,000', img:'https://via.placeholder.com/600x400?text=Aurora+GT'},
+    {id:'al02', name:'Cielo Sedan', desc:'Luxury sedan with spacious cabin & adaptive cruise control.', price:'₹26,49,000', img:'https://via.placeholder.com/600x400?text=Cielo+Sedan'},
+    {id:'al03', name:'Rover X', desc:'Compact SUV built for city comfort and weekend adventures.', price:'₹15,75,000', img:'https://via.placeholder.com/600x400?text=Rover+X'},
+    {id:'al04', name:'Marin EV', desc:'Electric hatch with 350 km range and fast charging.', price:'₹22,10,000', img:'https://via.placeholder.com/600x400?text=Marin+EV'},
+    {id:'al05', name:'Atlas Cruiser', desc:'Premium crossover with 7 seats and advanced safety.', price:'₹32,90,000', img:'https://via.placeholder.com/600x400?text=Atlas+Cruiser'},
+    {id:'al06', name:'Tempo Roadster', desc:'Convertible for the weekend — pure driving joy.', price:'₹20,40,000', img:'https://via.placeholder.com/600x400?text=Tempo+Roadster'}
+  ];
+
+  const grid = document.getElementById('models');
+  products.forEach(p=>{
+    const card = document.createElement('article');
+    card.className='card';
+    card.innerHTML = `
+      <img src="${p.img}" alt="${p.name}">
+      <div class="card-body">
+        <div class="title">${p.name}</div>
+        <div class="desc">${p.desc}</div>
+        <div class="price-row">
+          <div class="price">${p.price}</div>
+          <div style="display:flex;gap:8px">
+            <button class="book-btn" onclick='selectAndBook("${p.id}")'>Book Now</button>
+          </div>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  function selectAndBook(id){
+    const prod = products.find(p=>p.id===id);
+    if(!prod) return;
+    // save product to localStorage
+    localStorage.setItem('selectedProduct', JSON.stringify(prod));
+    // simple micro-interaction: brief button pulse then navigate
+    const toNavigate = () => window.location.href='form.html';
+    // tiny animation hint
+    alert(`"${prod.name}" added to booking. Proceeding to form.`);
+    toNavigate();
+  }
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
