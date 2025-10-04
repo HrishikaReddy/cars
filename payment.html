@@ -1,0 +1,141 @@
+<!-- Save as payment.html -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Payment - AutoLux</title>
+<style>
+  :root{
+    --bg:#061022; --card:#0b1220; --accent:#00c2a8; --muted:#9aa6b2;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  }
+  *{box-sizing:border-box}
+  body{ margin:0; min-height:100vh; background:linear-gradient(180deg,#061022,#071428); color:#e6eef3; display:flex; align-items:center; justify-content:center; padding:28px; }
+  .box{ width:100%; max-width:920px; display:grid; grid-template-columns:1fr 360px; gap:22px; }
+  .panel{ background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:20px; border-radius:14px; border:1px solid rgba(255,255,255,0.03);}
+  .brand{ display:flex; gap:12px; align-items:center; }
+  h2{ margin:0 0 6px 0; }
+  .muted{ color:var(--muted); font-size:14px; margin-bottom:10px;}
+  label{ font-size:13px; color:var(--muted); display:block; margin-top:8px;}
+  input{ width:100%; padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.05);background:transparent;color:inherit;}
+  .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .btn{ background:linear-gradient(90deg,var(--accent),#3dd7ff); border:none;padding:12px;border-radius:12px;color:#042; font-weight:800; cursor:pointer; margin-top:12px; width:100%;}
+  .summary{ font-size:14px; color:var(--muted); }
+  @media (max-width:900px){
+    .box{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="box">
+  <section class="panel">
+    <div class="brand">
+      <div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#00c2a8,#3dd7ff);display:flex;align-items:center;justify-content:center;font-weight:700;color:#042">AL</div>
+      <div>
+        <div style="font-weight:700">AutoLux</div>
+        <div style="color:var(--muted);font-size:13px">Secure Payment</div>
+      </div>
+    </div>
+
+    <h2 style="margin-top:18px">Complete Payment</h2>
+    <div class="muted">Enter your card details to simulate payment (dummy form).</div>
+
+    <form id="payForm" onsubmit="return handlePay(event)">
+      <label>Card Number</label>
+      <input id="card" type="text" placeholder="4242 4242 4242 4242" maxlength="19" inputmode="numeric" required oninput="formatCard(this)">
+
+      <div class="grid-2">
+        <div>
+          <label>Expiry (MM/YY)</label>
+          <input id="exp" type="text" placeholder="08/28" maxlength="5" required oninput="formatExp(this)">
+        </div>
+        <div>
+          <label>CVV</label>
+          <input id="cvv" type="text" placeholder="123" maxlength="4" required inputmode="numeric">
+        </div>
+      </div>
+
+      <button class="btn">Proceed to Pay</button>
+      <div style="margin-top:8px; color:var(--muted); font-size:13px">This is a demo payment page — no real charges will be made.</div>
+    </form>
+  </section>
+
+  <aside class="panel">
+    <h3 style="margin:0 0 8px 0">Order Summary</h3>
+    <div id="orderSummary">Loading...</div>
+    <div style="margin-top:14px">
+      <h4 style="margin:0 0 8px 0">Contact</h4>
+      <div class="summary" id="contactInfo"></div>
+    </div>
+  </aside>
+</div>
+
+<script>
+  // Helper formatting
+  function formatCard(el){
+    let v = el.value.replace(/\D/g,'').slice(0,16);
+    el.value = v.replace(/(\d{4})(?=\d)/g,'$1 ');
+  }
+  function formatExp(el){
+    let v = el.value.replace(/\D/g,'').slice(0,4);
+    if(v.length>=3) v = v.slice(0,2) + '/' + v.slice(2);
+    el.value = v;
+  }
+
+  // Load product & customer
+  const selectedRaw = localStorage.getItem('selectedProduct');
+  const custRaw = localStorage.getItem('customerInfo');
+  let selected = selectedRaw ? JSON.parse(selectedRaw) : null;
+  let customer = custRaw ? JSON.parse(custRaw) : null;
+
+  const orderSummary = document.getElementById('orderSummary');
+  const contactInfo = document.getElementById('contactInfo');
+
+  if(selected){
+    orderSummary.innerHTML = `
+      <div style="display:flex;gap:12px;align-items:center">
+        <img src="${selected.img}" alt="${selected.name}" style="width:120px;height:80px;object-fit:cover;border-radius:10px;border:1px solid rgba(255,255,255,0.03)">
+        <div>
+          <div style="font-weight:700">${selected.name}</div>
+          <div style="color:var(--muted);font-size:13px">${selected.desc}</div>
+          <div style="margin-top:8px;font-weight:800;color:#bff7e8">${selected.price}</div>
+        </div>
+      </div>
+    `;
+  } else {
+    orderSummary.textContent = 'No car selected. Please return to home to choose a car.';
+  }
+
+  if(customer){
+    contactInfo.innerHTML = `<div style="font-weight:700">${customer.fullname}</div><div class="summary">${customer.email}</div>`;
+  } else {
+    contactInfo.innerHTML = '<div class="summary">Customer details not provided.</div>';
+  }
+
+  function handlePay(e){
+    e.preventDefault();
+    if(!selected){ alert('No car selected. Return to home.'); return false; }
+    // Fake validation
+    const card = document.getElementById('card').value.replace(/\s/g,'');
+    const exp = document.getElementById('exp').value;
+    const cvv = document.getElementById('cvv').value;
+    if(card.length < 12 || cvv.length < 3){ alert('Please enter valid card details (demo).'); return false; }
+
+    // Create a fake order
+    const order = {
+      id: 'ORD' + Date.now().toString().slice(-6),
+      product: selected,
+      customer: customer,
+      payment: {method:'card', last4: card.slice(-4), timestamp: Date.now()}
+    };
+    // Save order to localStorage (could be an array)
+    localStorage.setItem('lastOrder', JSON.stringify(order));
+
+    // Simulate processing delay, then navigate
+    setTimeout(()=> window.location.href = 'thankyou.html', 700);
+    return false;
+  }
+</script>
+</body>
+</html>
